@@ -1,0 +1,74 @@
+
+
+:root {
+    --ff-main:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    --fw-bold: 900;
+    --clr-dark: rgb(11, 77, 70);
+    --clr-light: #fff;
+    --small: 1em;
+   
+}
+
+ul {
+    list-style: none;
+    
+}
+
+body {
+    align-items: center;
+}
+
+#game-title { 
+    background-color: var(--clr-dark);
+    color: var(--clr-light);
+    border: 5px solid black;
+    font-family: var(--ff-main);
+    font-weight: var(--fw-bold);
+    padding: var(--small);
+    text-align: center;
+    width: 50%;
+}
+
+#game-desc {
+    margin: 1em;
+    font-family: var(--ff-main);
+    padding: var(--small);
+}
+
+#start { 
+    background-color: var(--clr-dark);
+    color: var(--clr-light);
+    font-weight: var(--fw-bold);
+    padding: var(--small);
+}
+
+#start:hover{
+    opacity: .75;
+}
+
+#answers { 
+    font-size: 20px;
+    margin-left: 20rem;
+    margin-right: 10rem;
+    text-align: left;
+    list-style: none;
+}
+
+li {
+    width: 25%;
+    margin: 1em 0;
+    padding: .25em;
+    background-color: rgb(142, 201, 241);
+    border: 2px solid black;
+    font-weight: var(--fw-bold);
+    font-size: large;
+}
+
+li:hover{
+    opacity: .75;
+    cursor: pointer;
+}
+
+li:active{
+    transform: scale(1.05);
+}
