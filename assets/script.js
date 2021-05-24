@@ -5,17 +5,34 @@ var listAnswers = document.querySelector("#answers");
 var disappear = document.querySelector("#disappear");
 var feedback = document.querySelector("#feedback");
 var timer = document.querySelector("#timer");
-var secondsLeft = 10; 
+var secondsLeft = 30; 
+var runQuizEnd = false;
+var score = document.querySelector("#score");
+var inputInitials = document.createElement("input");
+var inputForm = document.querySelector("#score-form")
+var inputSubmit = document.createElement("input");
 
 function setTimer(){
     var timerInterval = setInterval(function(){
-        secondsLeft--;
-        timer.textContent = secondsLeft;
-        if (secondsLeft === 0 ){
+        
+        if (runQuizEnd){
             clearInterval(timerInterval);
             endQuiz();
         }
 
+        else if (secondsLeft === 0 ){
+            
+            runQuizEnd = true;
+            clearInterval(timerInterval);
+            endQuiz();
+        }
+        if (runQuizEnd !== true){
+        secondsLeft--;
+        timer.textContent = secondsLeft;
+        } else {
+            null
+        }
+        
     }, 1000);
 }
 var questions = [
@@ -48,7 +65,6 @@ startButton.addEventListener('click', function () {
 
 function getQuestion() {
     currentQuestion = questions[questionIndex];
-    console.log(currentQuestion);
 
     gameTitle.textContent = currentQuestion.questionName;
 
@@ -61,15 +77,12 @@ function getQuestion() {
         answerBtn.onclick = checkAnswer;
         listAnswers.appendChild(answerBtn);
     })
-    var removeMe = document.querySelectorAll("button");
-    console.log(removeMe);
 }
 
 function checkAnswer() {
     if (this.value !== currentQuestion.correct) {
-        // subtract quiz timer
-        feedback.textContent = "Incorrect!";
-        // could also run endGame if timer = 0
+        secondsLeft = secondsLeft - 10;
+        feedback.textContent = "Incorrect! You lost 10 seconds.";
     } else {
         feedback.textContent = "Correct!";
         // sound effects if time available
@@ -79,6 +92,8 @@ function checkAnswer() {
     if (questionIndex === (questions.length -1)){
         removeQuestions(listAnswers);
         endQuiz();
+        runQuizEnd = true;
+        return runQuizEnd
     } else {
         removeQuestions(listAnswers);
         questionIndex++; 
@@ -93,6 +108,26 @@ function removeQuestions(parent){
 }
 function endQuiz(){
     gameTitle.textContent = "This is the end of the quiz!";
+    if (secondsLeft !== 0){
+        console.log(secondsLeft);
+        score.textContent = "You scored " + secondsLeft + " points";
+        timer.textContent = "";
+    } else {
+        console.log(secondsLeft);
+        score.textContent = "You scored " + secondsLeft + " points";
+        timer.textContent = "";
+    }
+    inputForm.append(inputInitials);
+    inputInitials.setAttribute("type", "text");
+    inputInitials.setAttribute("name", "initials");
+    document.querySelector("#label").textContent = "Enter your initials: ";
+
+    inputForm.append(inputSubmit);
+    inputSubmit.setAttribute("type" , "submit");
+    inputSubmit.setAttribute("value", "Submit!");
+
+
+
 }
 
 // store the time to local storage
