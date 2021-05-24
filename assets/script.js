@@ -5,46 +5,53 @@ var listAnswers = document.querySelector("#answers");
 var disappear = document.querySelector("#disappear");
 var feedback = document.querySelector("#feedback");
 var timer = document.querySelector("#timer");
-var secondsLeft = 30; 
+var secondsLeft = 60; 
 var runQuizEnd = false;
 var score = document.querySelector("#score");
-var inputInitials = document.createElement("input");
 var inputForm = document.querySelector("#score-form")
-var inputSubmit = document.createElement("input");
+
+
+var inputInitials = document.createElement("input");
+var inputSubmit = document.createElement("button");
 
 function setTimer(){
     var timerInterval = setInterval(function(){
         
-        if (runQuizEnd){
+        if (runQuizEnd || secondsLeft === 0){
             clearInterval(timerInterval);
             endQuiz();
-        }
-
-        else if (secondsLeft === 0 ){
-            
-            runQuizEnd = true;
-            clearInterval(timerInterval);
-            endQuiz();
-        }
-        if (runQuizEnd !== true){
+        } else {
         secondsLeft--;
         timer.textContent = secondsLeft;
-        } else {
-            null
-        }
+        } 
         
     }, 1000);
 }
 var questions = [
     {
-        questionName: "Question 1?",
-        choices: ["option 1", "option 2", "option 3", "option 4"],
-        correct: "option 2",
+        questionName: "Which of the following options will log x as a string when console.log(typeof(x)) is run?",
+        choices: ["var x = 25", "var x = twenty-five", "var x = '25'", "var x = string"],
+        correct: "var x = '25'",
     },
     {
-        questionName: "Question 2?",
-        choices: ["option 1", "option 2", "option 3", "option 4"],
-        correct: "option 4",
+        questionName: "How do you select the first index of an array?",
+        choices: ["array[0]", "array[1]", "array[first]", "array[1st]"],
+        correct: "array[0]",
+    },
+    {
+        questionName: "Select the correct way to call the function pickMe.",
+        choices: ["pickMe;", "pickMe()", "pickme{}", "pickMe();"],
+        correct: "pickMe();",
+    },
+    {
+        questionName: "What is the correct way to code the logical operator 'and?'",
+        choices: ["and", "&&", "&", ".and"],
+        correct: "&&",
+    },
+    {
+        questionName: "How do you select an html element with the id of 'select-me'?",
+        choices: ["document.querySelector('#select-me'", "document.querySelector(select-me)", "document.querySelector(#select-me)", "document.querySelector('select-me'"],
+        correct: "document.querySelector('#select-me'",
     }
 ]
 var questionIndex = 0;
@@ -91,7 +98,6 @@ function checkAnswer() {
 
     if (questionIndex === (questions.length -1)){
         removeQuestions(listAnswers);
-        endQuiz();
         runQuizEnd = true;
         return runQuizEnd
     } else {
@@ -107,7 +113,7 @@ function removeQuestions(parent){
     
 }
 function endQuiz(){
-    gameTitle.textContent = "This is the end of the quiz!";
+    gameTitle.textContent = "This is the end!!";
     if (secondsLeft !== 0){
         console.log(secondsLeft);
         score.textContent = "You scored " + secondsLeft + " points";
@@ -119,44 +125,42 @@ function endQuiz(){
     }
     inputForm.append(inputInitials);
     inputInitials.setAttribute("type", "text");
-    inputInitials.setAttribute("name", "initials");
+    inputInitials.setAttribute("id", "input");
+   
+
     document.querySelector("#label").textContent = "Enter your initials: ";
 
     inputForm.append(inputSubmit);
-    inputSubmit.setAttribute("type" , "submit");
-    inputSubmit.setAttribute("value", "Submit!");
+    inputSubmit.setAttribute("id", "submit");
+    inputSubmit.textContent = "Save score";
 
+    var highScores = document.getElementById("high-scores");
+        for (i = 0; i < localStorage.length; i++){
+        var key = localStorage.key(i);
+        var value = localStorage.getItem(key);
+        highScores.innerHTML += `${key}: ${value} <br />`;
+         }
 
+    document.querySelector("#submit").addEventListener('click', function(event){
+        var plsWork = document.querySelector("input").value;
+        console.log(plsWork);
+        if (plsWork){
+        localStorage.setItem("initials", plsWork);
+        localStorage.setItem("score", secondsLeft);
+        }
+        var highScores = document.getElementById("high-scores");
+        for (i = 0; i < localStorage.length; i++){
+        var key = localStorage.key(i);
+        var value = localStorage.getItem(key);
+        highScores.innerHTML += `${key}: ${value} <br />`;
+         }
 
+        event.preventDefault();
+    })
+
+    var scoreBoardTitle = document.createElement("h3");
+    var scoreBoard = document.getElementById("score-board");
+    scoreBoard.append(scoreBoardTitle);
+    scoreBoardTitle.textContent = "High Scores";
 }
 
-// store the time to local storage
-// display the end page with a form to submit initials and display leaderboard--> function to sort by score
-// setItem will save to local storage, localStorage.getItem will grab it from the storage 
-// .val to grab the value in the text box they type into, grab timer variable as the score
-
-// changes the previous title to the question
-
-    // my attempt at a for loop to append list items -- doesn't work!! , having issues with the length not being defined
-    // var questionAnswers = quizAnswers[a];
-    // for (var i = 0; i < questionAnswers.length; i++){
-    //     var answer = document.createElement("li");
-    //     answer.appendChild(document.textContent(quizAnswers[i]));
-    //     listAnswers.appendChild(answer);
-
-    // appends the answers to the list -- it works! Is there a better way to get it to loop easily?
-
-    // document.body.appendChild(list)
-    // questionOneAnswers.forEach(function (e) {
-    //     var li = document.createElement("li");
-    //     li.innerText = e;
-    //     listAnswers.append(li);
-    // })
-
-
-    /*  my attempt at styling the list items that are appended -- doesn't work!!!
-        var stylePls = document.querySelectorAll("li");
-        for (var i =0; i < stylePls.length; i++);{
-        stylePls[i].setAttribute("style", "background-color: rgb(142, 201, 241); border: 2px solid black;");
-     
-    */

@@ -58,8 +58,6 @@ li {
     width: 25%;
     margin: 1em 0;
     padding: .25em;
-    /* background-color: rgb(142, 201, 241); */
-    /* border: 2px solid black; */
     font-weight: var(--fw-bold);
     font-size: large;
 }
